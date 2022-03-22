@@ -202,6 +202,10 @@ class TestSuite(object):
                     attrs = {"type": "failure"}
                     if failure["message"]:
                         attrs["message"] = decode(failure["message"], encoding)
+                    # changed by time
+                    if failure["payload"]:
+                        attrs["payload"] = decode(failure["payload"], encoding)
+                    # changed by time
                     if failure["type"]:
                         attrs["type"] = decode(failure["type"], encoding)
                     failure_element = ET.Element("failure", attrs)
@@ -215,6 +219,10 @@ class TestSuite(object):
                     attrs = {"type": "error"}
                     if error["message"]:
                         attrs["message"] = decode(error["message"], encoding)
+                    # # changed by time
+                    # if error["payload"]:
+                    #     attrs["payload"] = decode(failure["payload"], encoding)
+                    # # changed by time
                     if error["type"]:
                         attrs["type"] = decode(error["type"], encoding)
                     error_element = ET.Element("error", attrs)
@@ -420,10 +428,11 @@ class TestCase(object):
             if error_type:
                 self.errors[0]["type"] = error_type
 
-    def add_failure_info(self, message=None, output=None, failure_type=None):
+    def add_failure_info(self, message=None,payload=None ,output=None, failure_type=None):
         """Adds a failure message, output, or both to the test case"""
         failure = {}
         failure["message"] = message
+        failure["payload"] = payload
         failure["output"] = output
         failure["type"] = failure_type
         if self.allow_multiple_subalements:
